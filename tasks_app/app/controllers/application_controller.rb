@@ -7,12 +7,20 @@ class ApplicationController < ActionController::API
 
   def set_default_response_format = request.format = 'json'
 
+  def params_with_session
+    params.merge!(session_params)
+  end
+
   def session_params
     { token: }
   end
 
   def render_errors(fail_result, status: :bad_request)
-    render json: { status: :error }.merge(fail_result), status:
+    if fail_result.is_a?(Hash)
+      render json: { status: :error }.merge(fail_result), status:
+    else
+      render json: { status: :error, error_code: fail_result }, status:
+    end
   end
 
   def respond_with_unauthorized(fail_result)

@@ -7,6 +7,10 @@ class ApplicationController < ActionController::API
 
   def set_default_response_format = request.format = 'json'
 
+  def params_with_session
+    params.merge!(session_params)
+  end
+
   def session_params
     { token: }
   end
