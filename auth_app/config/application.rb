@@ -18,6 +18,8 @@ require "action_view/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+include Dry::Monads[:result]
+
 module AuthApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -43,5 +45,7 @@ module AuthApp
 
     config.action_controller.permit_all_parameters = true
     config.action_controller.wrap_parameters_by_default = false
+
+    config.hosts.clear
   end
 end

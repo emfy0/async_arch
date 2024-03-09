@@ -48,11 +48,11 @@ services:
     profiles:
       - donotstart
 
-  puma:
+  puma_tasks:
     <<: *rails
     command: bundle exec rails server -b 0.0.0.0
     ports:
-      - '3000:3000'
+      - '3001:3000'
 
   postgres:
     image: postgres:15.4-bullseye

@@ -7,4 +7,13 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  resources :users, only: %i[create] do
+    collection do
+      post :register
+      get :retrieve_current
+    end
+  end
+
+  resources :sessions, only: %i[create]
 end

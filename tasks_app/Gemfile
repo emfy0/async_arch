@@ -25,6 +25,14 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 
 gem "karafka"
+gem "datacaster"
+
+gem 'dry-auto_inject'
+gem 'dry-container'
+gem 'dry-inflector'
+gem 'dry-initializer'
+gem 'dry-monads', require: 'dry/monads/all'
+gem 'dry-transaction'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 # gem "rack-cors"
