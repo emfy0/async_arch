@@ -4,6 +4,7 @@ class InitialMigration < ActiveRecord::Migration[7.1]
       t.string :username, null: false
       t.string :password_digest
       t.string :role, null: false
+      t.uuid :public_id, null: false
 
       t.timestamps
     end

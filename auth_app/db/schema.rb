@@ -28,6 +28,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_03_163550) do
     t.string "username", null: false
     t.string "password_digest"
     t.string "role", null: false
+    t.uuid "public_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["username"], name: "index_users_on_username", unique: true

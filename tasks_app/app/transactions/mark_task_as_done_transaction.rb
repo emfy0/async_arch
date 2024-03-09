@@ -36,7 +36,7 @@ class MarkTaskAsDoneTransaction < BaseTransaction
   end
 
   def broadcast(input)
-    BaseProducer.(:tasks_stream, :task_completed, task: input[:task])
+    BaseProducer.(:tasks_lifecycle, :TaskCompleted, 1, task: input[:task])
   end
 end
 

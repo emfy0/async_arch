@@ -6,8 +6,8 @@ class UserStreamConsumer < ApplicationConsumer
       payload = message.payload.with_indifferent_access
 
       case payload[:event]
-      when 'user_created'
-        create_user.(payload['user']).value!
+      when 'UserCreated'
+        create_user.(payload['data']['user']).value!
       end
     end
   end

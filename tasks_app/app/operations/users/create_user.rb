@@ -3,6 +3,7 @@ module Users
     USER_PARAMS = %i[
       username
       role
+      public_id
     ].freeze
 
     def call(params)

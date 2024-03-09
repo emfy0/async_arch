@@ -19,16 +19,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_03_180541) do
     t.string "name", null: false
     t.text "description", null: false
     t.boolean "completed", default: false
+    t.uuid "public_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["public_id"], name: "index_tasks_on_public_id", unique: true
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
     t.string "role", null: false
+    t.uuid "public_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["public_id"], name: "index_users_on_public_id", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 

@@ -24,6 +24,7 @@ class CreateTaskTransaction < BaseTransaction
   def create_task(input)
     task = Task.create!(
       user: User.non_management.random.first,
+      public_id: SecureRandom.uuid,
       **input[:task_params]
     )
 
@@ -31,6 +32,6 @@ class CreateTaskTransaction < BaseTransaction
   end
 
   def broadcast(input)
-    BaseProducer.(:tasks_stream, :task_assigned, task: input[:task])
+    BaseProducer.(:tasks_lifecycle, :TaskAssigned, 1, task: input[:task])
   end
 end

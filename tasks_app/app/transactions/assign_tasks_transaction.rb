@@ -22,9 +22,13 @@ class AssignTasksTransaction < BaseTransaction
   end
 
   def assign_tasks(input)
-    Task.where(completed: false).find_each do |task|
-      task.update!(user: User.non_management.random.first)
-      BaseProducer.(:tasks_stream, :task_assigned, task:)
+    Task.where(completed: false).find_in_batches do |tasks|
+      BaseProducer.in_batches(:tasks_lifecycle, :TaskAssigned, 1) do |producer|
+        tasks.each do |task|
+          task.update!(user: User.non_management.random.first)
+          producer.preapre_event(task:)
+        end
+      end
     end
   end
 end

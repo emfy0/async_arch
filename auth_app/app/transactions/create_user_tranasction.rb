@@ -16,7 +16,7 @@ class CreateUserTranasction < BaseTransaction
   tee :broadcast
 
   def create_user(input)
-    user = User.new(input)
+    user = User.new(**input, public_id: SecureRandom.uuid)
 
     if user.save
       Success(input.merge!(user:))
@@ -36,6 +36,6 @@ class CreateUserTranasction < BaseTransaction
   end
 
   def broadcast(input)
-    BaseProducer.(:users_stream, :user_created, user: input[:user])
+    BaseProducer.(:users_stream, :UserCreated, 1, user: input[:user])
   end
 end
