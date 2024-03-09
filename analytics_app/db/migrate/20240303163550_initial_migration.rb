@@ -10,7 +10,6 @@ class InitialMigration < ActiveRecord::Migration[7.1]
     end
 
     add_index :users, :username, unique: true
-    add_index :users, :public_id, unique: true
 
     create_table :sessions do |t|
       t.uuid :token, null: false

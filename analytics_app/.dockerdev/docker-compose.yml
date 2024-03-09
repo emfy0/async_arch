@@ -1,0 +1,78 @@
+x-environments: &environments
+  DATABASE_URL: postgresql://postgres:keepinsecret@postgres/debifi_backend_development
+  TEST_DATABASE_URL: postgresql://postgres:keepinsecret@postgres/debifi_backend_test
+  KAFKA_URL: kafka.async_external:9092
+  RAILS_LOG_TO_STDOUT: 'true'
+  WEB_CONCURRENCY: 0
+  RAILS_MAX_THREADS: 2
+  HISTFILE: /code/log/.bash_history
+  EDITOR: vim
+
+x-ruby: &ruby
+  build:
+    context: .
+    dockerfile: ./Dockerfile
+  platform: linux/amd64
+  environment:
+    <<: *environments
+  tmpfs:
+    - /tmp
+    - ${WORK_DIR:-/code}/tmp/pids
+  stdin_open: true
+  tty: true
+  working_dir: ${WORK_DIR:-/code}
+  volumes:
+    - ..:${WORK_DIR:-/code}:cached
+    - .psqlrc:/root/.psqlrc:ro
+    - rails_cache:${WORK_DIR:-/code}/tmp/cache
+    - bundle:/usr/local/bundle
+  networks:
+    - default
+    - async_external
+
+x-rails-deps: &rails-deps
+  postgres:
+    condition: service_healthy
+
+x-rails: &rails
+  <<: *ruby
+  depends_on:
+    <<: *rails-deps
+
+services:
+  backend:
+    <<: *rails
+    command: /bin/bash
+    depends_on:
+      <<: *rails-deps
+    profiles:
+      - donotstart
+
+  puma_auth:
+    <<: *rails
+    command: bundle exec rails server -b 0.0.0.0
+    ports:
+      - '3002:3000'
+
+  postgres:
+    image: postgres:15.4-bullseye
+    environment:
+      POSTGRES_PASSWORD: keepinsecret
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - .psqlrc:/root/.psqlrc:ro
+      - ../log:/var/log/psql_history
+      - ../tmp:/root/app
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
+      interval: 10s
+
+volumes:
+  bundle:
+  rails_cache:
+  postgres:
+
+networks:
+  async_external:
+    external: true
