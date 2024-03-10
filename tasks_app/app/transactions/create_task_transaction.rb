@@ -1,7 +1,8 @@
 class CreateTaskTransaction < BaseTransaction
   request_schema do
     task = hash_schema(
-      name: string,
+      name: string & check { _1[/\[\S+\]/].nil? },
+      jira_id: string,
       description: string
     )
 
@@ -32,6 +33,9 @@ class CreateTaskTransaction < BaseTransaction
   end
 
   def broadcast(input)
-    BaseProducer.(:tasks_lifecycle, :TaskAssigned, 1, task: input[:task])
+    task = input[:task]
+
+    BaseProducer.(:tasks_stream, :TaskCreated, 2, task:)
+    BaseProducer.(:tasks_lifecycle, :TaskAssigned, 1, task:)
   end
 end

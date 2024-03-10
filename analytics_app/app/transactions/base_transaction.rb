@@ -1,5 +1,5 @@
 class BaseTransaction
-  include Dry::Transaction(container: AuthApp::CONTAINER)
+  include Dry::Transaction(container: AnalyticsApp::CONTAINER)
 
   class << self
     DRY_RESERVED_INSTANCE_VARIABLES = %i[@steps @operations @stack].freeze

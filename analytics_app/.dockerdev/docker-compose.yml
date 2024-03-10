@@ -48,7 +48,7 @@ services:
     profiles:
       - donotstart
 
-  puma_auth:
+  puma_analitycs:
     <<: *rails
     command: bundle exec rails server -b 0.0.0.0
     ports:

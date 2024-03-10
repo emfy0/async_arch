@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_03_180541) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_10_183427) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_03_180541) do
     t.uuid "public_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "jira_id"
     t.index ["public_id"], name: "index_tasks_on_public_id", unique: true
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end

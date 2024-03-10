@@ -31,6 +31,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_03_163550) do
     t.uuid "public_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["public_id"], name: "index_users_on_public_id", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 

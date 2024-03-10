@@ -32,13 +32,45 @@ class KarafkaApp < Karafka::App
     # Uncomment this if you use Karafka with ActiveJob
     # You need to define the topic per each queue name you use
     # active_job_topic :default
-    topic :example do
+
+    topic :users_stream do
       # Uncomment this if you want Karafka to manage your topics configuration
       # Managing topics configuration via routing will allow you to ensure config consistency
       # across multiple environments
       #
       config(partitions: 1)
-      consumer ExampleConsumer
+      consumer UsersStreamConsumer
+
+      dead_letter_queue(
+        topic: 'users_stream_dlq'
+      )
+    end
+
+    topic :tasks_stream do
+      config(partitions: 1)
+      consumer TasksStreamConsumer
+
+      dead_letter_queue(
+        topic: 'tasks_stream_dlq'
+      )
+    end
+
+    topic :tasks_lifecycle do
+      config(partitions: 1)
+      consumer TasksLifecycleConsumer
+
+      dead_letter_queue(
+        topic: 'tasks_lifecycle_dlq'
+      )
+    end
+
+    topic :tasks_lifecycle_dlq do
+      config(partitions: 1)
+      consumer TasksLifecycleConsumer
+
+      dead_letter_queue(
+        topic: 'tasks_lifecycle_dlq'
+      )
     end
   end
 end
