@@ -17,7 +17,7 @@ class RetrieveUserTransaction < BaseTransaction
     if session&.active?
       Success(input.merge!(user: session.user))
     else
-      Failure('invalid token')
+      Failure(:not_found)
     end
   end
 end

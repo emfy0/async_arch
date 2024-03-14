@@ -32,10 +32,10 @@ class BaseProducer
     end
 
     def generate_event_hash(topic, event, version, locals)
-      JbuilderTemplate.new(ApplicationController) do |json|
-        json.event event
+      hash = JbuilderTemplate.new(ApplicationController) do |json|
+        json.event event.to_s
         json.event_id SecureRandom.uuid
-        json.event_time Time.current
+        json.event_time Time.current.iso8601
         json.event_version version
         json.producer_name 'TaskApp'
 
@@ -44,7 +44,11 @@ class BaseProducer
             partial: "events/#{topic}/#{event}_#{version}", locals:
           )
         end
-      end.attributes!
+      end
+
+      hash = hash.attributes!.deep_symbolize_keys!
+
+      "Events::#{topic.to_s.camelize}::#{event}#{version}Schema".constantize.validate(hash).value!
     end
   end
 end

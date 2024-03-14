@@ -2,7 +2,7 @@ require "net/http"
 
 module Users
   class RetrieveUser
-    include TasksApp::Import["users.create_user"]
+    include AnalyticsApp::Import["users.create_user"]
 
     BASE_URL = URI("http://puma_auth.async_external:3000").freeze
 

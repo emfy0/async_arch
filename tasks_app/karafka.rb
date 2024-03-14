@@ -38,7 +38,11 @@ class KarafkaApp < Karafka::App
       # across multiple environments
       #
       config(partitions: 1)
-      consumer UserStreamConsumer
+      consumer UsersStreamConsumer
+
+      dead_letter_queue(
+        topic: 'users_stream_dlq'
+      )
     end
   end
 end

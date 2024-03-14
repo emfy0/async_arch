@@ -45,6 +45,8 @@ class BaseProducer
           )
         end
       end.attributes!
+
+      "Events::#{topic.to_s.camelize}::#{event}#{version}Schema".constantize.validate(hash).value!
     end
   end
 end

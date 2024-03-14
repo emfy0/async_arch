@@ -7,4 +7,13 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # сколько заработал топ-менеджмент за сегодня и сколько попугов ушло в минус
+  get 'top_management_profit', to: 'accounting#top_management_profit'
+
+  # информации о собственных счетах (лог операций + текущий баланс)
+  get 'me', to: 'accounting#me'
+
+  # показывать самую дорогую задачу за день, неделю или месяц.
+  get 'most_expensive_task', to: 'analytics#most_expensive_task'
 end

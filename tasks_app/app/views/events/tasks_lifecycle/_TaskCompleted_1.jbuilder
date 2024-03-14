@@ -1,3 +1,3 @@
 json.task do
-  json.partial! 'tasks/task', task:
+  json.public_id task.public_id
 end
